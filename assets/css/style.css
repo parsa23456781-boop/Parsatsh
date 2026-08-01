@@ -1111,3 +1111,50 @@ button, input, select, textarea { font: inherit; color: inherit; }
   .hero h1 { font-size: 27px; }
   .search__hint { display: none; }
 }
+/* ---------- ۱۵. جلوگیری از سرریز افقی ---------- */
+html, body { max-width: 100%; overflow-x: hidden; }
+
+.shell { box-sizing: border-box; }
+
+@media (max-width: 900px) {
+  /* میز کار تک‌ستونی شود */
+  .workspace { grid-template-columns: 1fr !important; }
+
+  /* هدر بشکند و جمع شود */
+  .topbar__row {
+    height: auto;
+    flex-wrap: wrap;
+    row-gap: 10px;
+    padding: 10px 0;
+  }
+
+  .search {
+    order: 10;
+    flex: 1 1 100%;
+    max-width: none;
+  }
+
+  .nav {
+    position: fixed;
+    inset-inline: 12px;
+    top: 72px;
+    flex-direction: column;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    padding: 8px;
+    display: none;
+    z-index: 70;
+  }
+  .nav[data-open="true"] { display: flex; }
+  .menubtn { display: grid; }
+
+  /* نقشه‌ی شفت از عرض بیرون نزند */
+  .viewport svg { max-width: 100%; height: auto; }
+
+  /* کارت محصولات تک‌ستونی */
+  .grid { grid-template-columns: 1fr !important; }
+
+  /* مشخصات دو ستونه */
+  .specs { grid-template-columns: 1fr 1fr !important; }
+}
