@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="steel" data-mode="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>پشتیبانی — MAP</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="support">
+
+<!-- ================= هدر ================= -->
+<header class="topbar">
+  <div class="shell topbar__row">
+
+    <a class="brand" href="index.html">
+      <span class="brand__mark">MAP</span>
+      <span>
+        <span class="brand__name">پروژه MAP</span>
+        <span class="brand__sub">دستیار طراحی مهندسی</span>
+      </span>
+    </a>
+
+    <button class="iconbtn menubtn" id="menuBtn" aria-label="منو">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+
+    <nav class="nav" id="nav">
+      <a href="index.html">خانه</a>
+      <a href="projects.html">پروژه</a>
+      <a href="products.html">محصولات</a>
+      <a href="support.html" aria-current="page">پشتیبانی</a>
+    </nav>
+
+    <div class="search">
+      <div class="search__field">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="searchInput" type="search" placeholder="جست‌وجوی قطعه، جنس یا کد…" aria-label="جست‌وجو">
+        <span class="search__hint">/</span>
+      </div>
+      <div class="search__results" id="searchResults"></div>
+    </div>
+
+    <div class="tools">
+      <div class="themepick">
+        <button class="iconbtn" id="themeBtn" aria-label="انتخاب تم رنگی">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18 4.5 4.5 0 0 0 0-9 4.5 4.5 0 0 1 0-9z"/></svg>
+        </button>
+        <div class="themepick__panel" id="themePanel">
+          <div class="themepick__title">تم رنگی سایت</div>
+          <div class="swatches">
+            <button class="swatch swatch--steel"   data-theme="steel"   aria-label="تم فولاد"></button>
+            <button class="swatch swatch--copper"  data-theme="copper"  aria-label="تم مس"></button>
+            <button class="swatch swatch--indigo"  data-theme="indigo"  aria-label="تم نیلی"></button>
+            <button class="swatch swatch--emerald" data-theme="emerald" aria-label="تم زمرد"></button>
+            <button class="swatch swatch--furnace" data-theme="furnace" aria-label="تم کوره"></button>
+          </div>
+          <div class="themepick__names">
+            <span>فولاد</span><span>مس</span><span>نیلی</span><span>زمرد</span><span>کوره</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="iconbtn" id="modeBtn" aria-label="تغییر حالت">
+        <svg id="iconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg>
+        <svg id="iconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+      </button>
+
+      <button class="btn btn--accent btn--login" id="loginBtn" data-open-auth>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg>
+        <span>ورود</span>
+      </button>
+    </div>
+
+  </div>
+</header>
+
+
+<main>
+  <section class="stub shell">
+    <span class="eyebrow">SUPPORT</span>
+    <h1>پشتیبانی</h1>
+    <p>راهنمای کار با دستیار، پرسش‌های پرتکرار و راه‌های تماس با تیم MAP.</p>
+    <div class="stub__box">
+      این صفحه هنوز خالی است. محتوای آن را در فایل <code>support.html</code> بین تگ‌های <code>&lt;main&gt;</code> بنویس.
+    </div>
+  </section>
+</main>
+
+<!-- ================= فوتر ================= -->
+<footer class="footer">
+  <div class="shell">
+    <div class="footer__row">
+      <div>
+        <div class="brand">
+          <span class="brand__mark">MAP</span>
+          <span><span class="brand__name">پروژه MAP</span></span>
+        </div>
+        <p style="color:var(--text-2);font-size:13.5px;max-width:44ch;margin-top:10px">
+          واسط هوشمند بین کاربر و نرم‌افزار طراحی: از جمله‌ی فارسی تا نقشه‌ی آماده‌ی ساخت.
+        </p>
+      </div>
+      <nav class="footer__links">
+        <a href="index.html">خانه</a>
+        <a href="projects.html">پروژه</a>
+        <a href="products.html">محصولات</a>
+        <a href="support.html">پشتیبانی</a>
+      </nav>
+    </div>
+    <div class="footer__copy">نسخه‌ی نمایشی · اعداد و قیمت‌ها آزمایشی هستند.</div>
+  </div>
+</footer>
+
+<!-- ================= مودال ورود ================= -->
+<div class="modal" id="authModal" data-open="false" role="dialog" aria-modal="true" aria-label="ورود به حساب">
+  <div class="modal__box">
+    <div class="modal__head">
+      <h2>ورود به MAP</h2>
+      <button class="modal__x" id="authClose" aria-label="بستن">×</button>
+    </div>
+    <p style="color:var(--text-2);font-size:13px">برای ذخیره‌ی طرح‌ها و دیدن سابقه‌ی سفارش‌ها وارد شو.</p>
+
+    <div class="tabs" role="tablist">
+      <button class="tab" data-mode="login" role="tab" aria-selected="true">ورود</button>
+      <button class="tab" data-mode="signup" role="tab" aria-selected="false">ثبت‌نام</button>
+    </div>
+
+    <div class="field" id="nameField" style="display:none">
+      <label for="authName">نام و نام خانوادگی</label>
+      <input id="authName" type="text" placeholder="مثلاً: سارا محمدی">
+    </div>
+
+    <div class="field">
+      <label for="authId">موبایل یا ایمیل</label>
+      <input id="authId" type="text" dir="ltr" placeholder="09123456789">
+    </div>
+
+    <div class="field">
+      <label for="authPw">گذرواژه</label>
+      <input id="authPw" type="password" dir="ltr" placeholder="حداقل ۶ نویسه">
+    </div>
+
+    <div class="err" id="authErr"></div>
+    <button class="btn btn--accent" id="authSubmit">ورود به حساب</button>
+    <div class="modal__foot">این فرم هنوز به سرور وصل نیست و فقط ظاهر را نشان می‌دهد.</div>
+  </div>
+</div>
+
+<div class="toast" id="toast" data-open="false"></div>
+
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>
