@@ -1062,3 +1062,52 @@ button, input, select, textarea { font: inherit; color: inherit; }
   .hero h1 { font-size: 27px; }
   .search__hint { display: none; }
 }
+/* ---------- ۱۴. موبایل ---------- */
+@media (max-width: 640px) {
+  :root { --shell: min(1360px, 100% - 20px); }
+
+  body { font-size: 14.5px; -webkit-text-size-adjust: 100%; }
+
+  /* هدر جمع‌وجورتر */
+  .brand__mark { width: 32px; height: 32px; border-radius: 9px; }
+  .brand__name { font-size: 15px; }
+
+  /* هیرو کوتاه‌تر */
+  .hero { padding: 34px 0 20px; }
+  .hero__cta .btn { flex: 1; justify-content: center; }
+  .metrics { gap: 18px 26px; margin-top: 26px; }
+  .metric__v { font-size: 19px; }
+
+  /* چت کوتاه‌تر تا پنل هم دیده شود */
+  .chat { height: min(520px, 68vh); }
+  .msg { max-width: 100%; }
+  .chips { gap: 6px; }
+  .chip { font-size: 12px; padding: 5px 11px; }
+
+  /* پنل طراحی */
+  .panel__body { padding: 14px; }
+  .total { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .total__x { margin-inline-start: 0; }
+  .dl { flex-direction: column; }
+  .dl .btn { width: 100%; }
+
+  /* بخش‌ها */
+  .section { padding: 36px 0; }
+  .workspace { gap: 16px; padding: 16px 0; }
+
+  /* توست تمام‌عرض */
+  .toast {
+    inset-inline: 14px;
+    inset-block-end: 14px;
+  }
+
+  /* مودال ورود */
+  .modal__box { padding: 20px; }
+}
+
+@media (max-width: 420px) {
+  .grid { grid-template-columns: 1fr; }
+  .specs { grid-template-columns: 1fr 1fr; }
+  .hero h1 { font-size: 27px; }
+  .search__hint { display: none; }
+}
