@@ -1158,3 +1158,20 @@ html, body { max-width: 100%; overflow-x: hidden; }
   /* مشخصات دو ستونه */
   .specs { grid-template-columns: 1fr 1fr !important; }
 }
+/* ---------- ۱۶. اصلاح عرض در گوشی ---------- */
+@media (max-width: 900px) {
+  :root { --shell: calc(100% - 24px) !important; }
+
+  .shell {
+    width: var(--shell) !important;
+    max-width: 100% !important;
+    margin-inline: auto !important;
+  }
+
+  body::before { background-size: 32px 32px; }
+
+  /* هر چیزی که از عرض بزند، جمع شود */
+  .card, .product, .viewport, .total, .composer { max-width: 100%; }
+
+  .hero::after { display: none; }
+}
