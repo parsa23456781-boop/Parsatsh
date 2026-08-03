@@ -19,8 +19,7 @@ const $  = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
 /** عدد را با ارقام فارسی و جداکننده‌ی هزارگان برمی‌گرداند */
-const faNum = n => Number(n).toLocaleString('fa-IR');
-
+const faNum = n => Number(n).toLocaleString('en-US');
 /* ---------- ۱. تم و حالت ---------- */
 const THEMES = ['steel', 'copper', 'indigo', 'emerald', 'furnace'];
 
@@ -47,14 +46,14 @@ function applyMode(mode) {
    هشدار: این قیمت‌ها فقط داده‌ی نمایشی (دمو) هستند و مرجع مهندسی نیستند.
    بعداً باید از API قیمت‌گذاری واقعی خوانده شوند.                       */
 const PRODUCTS = [
-  { id: 'shaft-48',  name: 'شفت فولادی St37',      meta: 'Ø۴۸ × ۲۰۰۰ میلی‌متر · بار ثابت', price: 4722672,  unit: 'هر شاخه', tag: 'شفت', icon: 'shaft' },
-  { id: 'shaft-ss',  name: 'شفت استنلس SS 304',    meta: 'Ø۴۸ × ۲۰۰۰ میلی‌متر · ضدزنگ',    price: 10238229, unit: 'هر شاخه', tag: 'شفت', icon: 'shaft' },
-  { id: 'shaft-al',  name: 'شفت آلومینیوم 6061-T6', meta: 'Ø۴۸ × ۲۰۰۰ میلی‌متر · سبک',      price: 10426837, unit: 'هر شاخه', tag: 'شفت', icon: 'shaft' },
-  { id: 'gear-m3',   name: 'چرخ‌دنده ساده مدول ۳',   meta: 'z=۲۴ · فولاد ۱.۷۲۲۵',            price: 3180000,  unit: 'هر عدد',  tag: 'چرخ‌دنده', icon: 'gear' },
-  { id: 'flange-dn80', name: 'فلنج DN80 کلاس ۱۵۰',  meta: 'فولاد کربنی · جوشی',             price: 1450000,  unit: 'هر عدد',  tag: 'فلنج', icon: 'flange' },
-  { id: 'brg-6208',  name: 'یاتاقان بلبرینگی 6208', meta: 'قطر داخلی ۴۰ میلی‌متر',          price: 890000,   unit: 'هر عدد',  tag: 'یاتاقان', icon: 'bearing' },
-  { id: 'key-14',    name: 'خار موازی ۱۴×۹',        meta: 'DIN 6885 · فولاد C45',           price: 120000,   unit: 'هر عدد',  tag: 'خار', icon: 'key' },
-  { id: 'plate-10',  name: 'ورق فولادی ۱۰ میلی‌متر', meta: 'St37 · برش لیزر',                price: 2650000,  unit: 'هر مترمربع', tag: 'ورق', icon: 'plate' }
+  { id: 'shaft-48',  name: 'شفت فولادی St37',      meta: 'Ø48 × 2000 میلی‌متر · بار ثابت', price: 4722672,  unit: 'هر شاخه', tag: 'شفت', icon: 'shaft' },
+  { id: 'shaft-ss',  name: 'شفت استنلس SS 304',    meta: 'Ø48 × 2000 میلی‌متر · ضدزنگ',    price: 10238229, unit: 'هر شاخه', tag: 'شفت', icon: 'shaft' },
+  { id: 'shaft-al',  name: 'شفت آلومینیوم 6061-T6', meta: 'Ø48 × 2000 میلی‌متر · سبک',      price: 10426837, unit: 'هر شاخه', tag: 'شفت', icon: 'shaft' },
+  { id: 'gear-m3',   name: 'چرخ‌دنده ساده مدول 3',   meta: 'z=24 · فولاد 1.7225',            price: 3180000,  unit: 'هر عدد',  tag: 'چرخ‌دنده', icon: 'gear' },
+  { id: 'flange-dn80', name: 'فلنج DN80 کلاس 150',  meta: 'فولاد کربنی · جوشی',             price: 1450000,  unit: 'هر عدد',  tag: 'فلنج', icon: 'flange' },
+  { id: 'brg-6208',  name: 'یاتاقان بلبرینگی 6208', meta: 'قطر داخلی 40 میلی‌متر',          price: 890000,   unit: 'هر عدد',  tag: 'یاتاقان', icon: 'bearing' },
+  { id: 'key-14',    name: 'خار موازی 14×9',        meta: 'DIN 6885 · فولاد C45',           price: 120000,   unit: 'هر عدد',  tag: 'خار', icon: 'key' },
+  { id: 'plate-10',  name: 'ورق فولادی 10 میلی‌متر', meta: 'St37 · برش لیزر',                price: 2650000,  unit: 'هر مترمربع', tag: 'ورق', icon: 'plate' }
 ];
 
 const ICONS = {
@@ -223,7 +222,28 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#menuBtn')?.addEventListener('click', () => {
     nav.dataset.open = nav.dataset.open === 'true' ? 'false' : 'true';
   });
-
   initSearch();
   initAuth();
+});
+/* ---------- انیمیشن اسکرول ---------- */
+document.addEventListener('DOMContentLoaded', () => {
+  const bar = document.createElement('div');
+  bar.className = 'progress';
+  document.body.appendChild(bar);
+
+  addEventListener('scroll', () => {
+    const max = document.body.scrollHeight - innerHeight;
+    bar.style.transform = 'scaleX(${max > 0 ? scrollY / max : 0})';
+  }, { passive: true });
+
+  const targets = $$('.section__head, .card, .product, .metrics > div, .stub__box, .hero h1, .hero p.lead, .hero__cta');
+  targets.forEach(el => el.classList.add('reveal'));
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: .12, rootMargin: '0px 0px -60px 0px' });
+
+  targets.forEach(el => io.observe(el));
 });
