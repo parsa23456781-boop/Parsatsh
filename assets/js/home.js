@@ -47,8 +47,7 @@ function drawPanel() {
   $('#specTorque').textContent = faNum(state.torque) + ' N·m';
   $('#specLength').textContent = faNum(state.length) + ' mm';
   $('#specLoad').textContent   = state.load;
-  $('#specSafety').textContent = state.safety.toLocaleString('fa-IR', { minimumFractionDigits: 1 });
-
+  $('#specSafety').textContent = state.safety.toFixed(1);
   $('#dimLength').textContent = faNum(state.length) + ' mm';
   $('#dimDia').textContent    = 'Ø' + faNum(state.dia);
   $('#draftId').textContent   = 'DRAFT · SHAFT-' + String(184 + Math.round(state.torque / 10)).padStart(5, '0');
@@ -227,4 +226,263 @@ document.addEventListener('DOMContentLoaded', () => {
   $$('[data-download]').forEach(b => b.addEventListener('click', () => {
     toast('خروجی فایل بعد از اتصال به موتور SolidWorks فعال می‌شود.');
   }));
+  /* ---------- ورودی‌های مختلف ---------- */
+  const ACCEPT = {
+    image: 'image/*',
+    pdf:   '.pdf,.doc,.docx,.xls,.xlsx',
+    cad:   '.step,.stp,.iges,.igs,.sldprt,.sldasm,.dwg,.dxf'
+  };
+
+  const IN_LABEL = {
+    voice:  'پیام صوتی',
+    camera: 'عکس دوربین',
+    image:  'تصویر قطعه',
+    pdf:    'کاتالوگ / سند',
+    cad:    'فایل CAD'
+  };
+
+  const OUT_LABEL = {
+    step:    'فایل STEP',
+    drawing: 'نقشه‌ی PDF',
+    part:    'فایل پارت SolidWorks',
+    render:  'رندر تصویری',
+    quote:   'پیش‌فاکتور اکسل'
+  };
+
+  function extOf(name) {
+    const i = name.lastIndexOf('.');
+    return i < 0 ? '' : name.slice(i + 1).toLowerCase();
+  }
+
+  function kindOf(file) {
+    const e = extOf(file.name);
+    if (file.type.startsWith('image/')) return 'image';
+    if (['step', 'stp', 'iges', 'igs', 'sldprt', 'sldasm', 'dwg', 'dxf'].includes(e)) return 'cad';
+    return 'pdf';
+  }
+
+  const ICON_OF = { image: '🖼', cad: '📐', pdf: '📄' };
+
+  function prettySize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + ' KB';
+    return (bytes / 1024 / 1024).toFixed(2) + ' MB';
+  }
+
+  const REPLY_OF = {
+    image: 'تصویر را گرفتم. تشخیص نوع قطعه از روی عکس در نسخه‌ی بعدی اضافه می‌شود.',
+    cad:   'فایل CAD را گرفتم. بعد از اتصال به موتور، ابعاد و جنس را از خود فایل می‌خوانم.',
+    pdf:   'سند را گرفتم. بعداً مشخصات را از جدول‌های داخلش استخراج می‌کنم.'
+  };
+
+  const MAX_MB = 25;
+
+  function attachFile(file) {
+    if (file.size > MAX_MB * 1024 * 1024) {
+      addMsg('فایل «' + file.name + '» بزرگ‌تر از ' + MAX_MB + ' مگابایت است و فعلاً پذیرفته نمی‌شود.');
+      return;
+    }
+
+    const kind = kindOf(file);
+    const name = file.name.replace(/[<>&]/g, '');
+    let html = '<span class="attach">' + ICON_OF[kind] + ' ' + name + ' — ' + prettySize(file.size) + '</span>';
+
+    if (kind === 'image') {
+      html += '<br><img class="thumb" src="' + URL.createObjectURL(file) + '" alt="' + name + '">';
+    } else {
+      html += '<br><span class="filecard"><b>' + (extOf(file.name).toUpperCase() || 'FILE')
+            + '</b><span>' + IN_LABEL[kind] + '</span></span>';
+    }
+
+    addMsg(html, 'me');
+    setTimeout(() => addMsg(REPLY_OF[kind]), 750);
+  }
+
+  function attachFiles(list) {
+    [...list].slice(0, 5).forEach((f, i) => setTimeout(() => attachFile(f), i * 250));
+  }
+
+  /* ---------- راهنمای دسترسی ---------- */
+
+  /** پیام راهنمای باز کردن دسترسی را در چت نشان می‌دهد */
+  function accessHelp(what, extra) {
+    let msg = 'دسترسی به <b>' + what + '</b> بسته است.<br><br>'
+            + '<b>برای باز کردن:</b><br>'
+            + '۱. روی آیکون 🔒 یا ⓘ کنار آدرس سایت بزنید<br>'
+            + '۲. گزینه‌ی «' + what + '» را پیدا کنید<br>'
+            + '۳. آن را روی «Allow» بگذارید<br>'
+            + '۴. صفحه را رفرش کنید';
+    if (extra) msg += '<br><br>' + extra;
+    addMsg(msg);
+    toast('دسترسی به ' + what + ' داده نشد.');
+  }
+
+  /** خطای getUserMedia را به پیام فارسی تبدیل می‌کند */
+  function mediaError(err, what) {
+    if (err.name === 'NotAllowedError' || err.name === 'SecurityError') {
+      accessHelp(what);
+    } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+      addMsg(what + 'ی روی این دستگاه پیدا نشد. یکی وصل کنید و صفحه را رفرش کنید.');
+    } else if (err.name === 'NotReadableError') {
+      addMsg(what + ' در اختیار برنامه‌ی دیگری است. آن برنامه را ببندید و دوباره امتحان کنید.');
+    } else {
+      addMsg('کار نکرد. (' + err.name + ')');
+    }
+  }
+
+  /** آیا صفحه روی بستر امن باز شده؟ */
+  function secureOk() {
+    if (window.isSecureContext) return true;
+    addMsg('این قابلیت فقط روی <b>HTTPS</b> یا <b>localhost</b> کار می‌کند. '
+         + 'لطفاً سایت را روی آدرس امن باز کنید.');
+    return false;
+  }
+
+  const fileIn = $('#fileIn');
+  const camIn  = $('#camIn');
+
+  $$('.intype').forEach(btn => btn.addEventListener('click', () => {
+    const kind = btn.dataset.in;
+
+    if (kind === 'voice')  { toggleRec(btn); return; }
+    if (kind === 'camera') { openCamera(); return; }
+
+    // فایل: مرورگر اجازه‌ی جداگانه نمی‌خواهد، ولی اگر باز نشد راهنما بده
+    try {
+      fileIn.accept = ACCEPT[kind] || '';
+      fileIn.multiple = true;
+      fileIn.click();
+    } catch (err) {
+      addMsg('پنجره‌ی انتخاب فایل باز نشد. '
+           + 'اگر مرورگر پیام مسدودسازی نشان داد، آن را Allow کنید، '
+           + 'یا فایل را مستقیم روی همین پنجره‌ی چت بکشید و رها کنید.');
+    }
+  }));
+
+  fileIn.addEventListener('change', e => {
+    if (e.target.files.length) attachFiles(e.target.files);
+    e.target.value = '';
+  });
+
+  if (camIn) {
+    camIn.addEventListener('change', e => {
+      if (e.target.files.length) attachFiles(e.target.files);
+      e.target.value = '';
+    });
+  }
+
+  /** گرفتن عکس با دوربین */
+  async function openCamera() {
+    // در موبایل، ورودی فایل با capture ساده‌تر و مطمئن‌تر است
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    if (isMobile && camIn) { camIn.click(); return; }
+
+    if (!secureOk()) return;
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      addMsg('این مرورگر دوربین را پشتیبانی نمی‌کند. به‌جایش از دکمه‌ی «عکس» استفاده کنید.');
+      return;
+    }
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const video = document.createElement('video');
+      video.srcObject = stream;
+      video.muted = true;
+      await video.play();
+
+      // یک فریم بگیر
+      await new Promise(r => setTimeout(r, 400));
+      const canvas = document.createElement('canvas');
+      canvas.width  = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext('2d').drawImage(video, 0, 0);
+      stream.getTracks().forEach(t => t.stop());
+
+      canvas.toBlob(blob => {
+        const file = new File([blob], 'camera-' + Date.now() + '.jpg', { type: 'image/jpeg' });
+        attachFile(file);
+      }, 'image/jpeg', 0.9);
+
+    } catch (err) {
+      mediaError(err, 'دوربین');
+    }
+  }
+
+  /* کشیدن و رها کردن */
+  const dropZone = $('#chat');
+
+  ['dragenter', 'dragover'].forEach(ev =>
+    dropZone.addEventListener(ev, e => { e.preventDefault(); dropZone.dataset.drag = 'true'; })
+  );
+
+  ['dragleave', 'drop'].forEach(ev =>
+    dropZone.addEventListener(ev, e => {
+      e.preventDefault();
+      if (ev === 'dragleave' && dropZone.contains(e.relatedTarget)) return;
+      dropZone.dataset.drag = 'false';
+    })
+  );
+
+  dropZone.addEventListener('drop', e => {
+    if (e.dataTransfer.files.length) attachFiles(e.dataTransfer.files);
+  });
+
+  /* چسباندن از کلیپ‌بورد */
+  $('#chatInput').addEventListener('paste', e => {
+    const files = [...(e.clipboardData.files || [])];
+    if (files.length) { e.preventDefault(); attachFiles(files); }
+  });
+
+  /* دکمه‌های خروجی */
+  $$('[data-out]').forEach(b => b.addEventListener('click', () => {
+    toast(OUT_LABEL[b.dataset.out] + ' — بعد از اتصال به موتور SolidWorks فعال می‌شود.');
+  }));
+
+  /* ---------- ضبط صدا ---------- */
+  let recorder = null, chunks = [], startedAt = 0;
+
+  window.toggleRec = async function (btn) {
+    if (recorder && recorder.state === 'recording') { recorder.stop(); return; }
+
+    if (!secureOk()) return;
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia
+        || typeof MediaRecorder === 'undefined') {
+      addMsg('این مرورگر ضبط صدا را پشتیبانی نمی‌کند. لطفاً Chrome یا Firefox را امتحان کنید.');
+      return;
+    }
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      recorder = new MediaRecorder(stream);
+      chunks = [];
+      startedAt = Date.now();
+
+      recorder.ondataavailable = e => chunks.push(e.data);
+
+      recorder.onstop = () => {
+        stream.getTracks().forEach(t => t.stop());
+        btn.dataset.rec = 'false';
+        btn.textContent = '🎙 وویس';
+
+        const secs = Math.round((Date.now() - startedAt) / 1000);
+        const url  = URL.createObjectURL(new Blob(chunks, { type: 'audio/webm' }));
+
+        addMsg('<span class="attach">🎙 پیام صوتی — ' + secs + ' ثانیه</span>'
+             + '<br><audio controls src="' + url + '"></audio>', 'me');
+
+        setTimeout(() => addMsg('صدا را گرفتم. تبدیل گفتار به متن بعد از اتصال موتور فعال می‌شود.'), 700);
+      };
+
+      recorder.start();
+      btn.dataset.rec = 'true';
+      btn.textContent = '⏹ در حال ضبط…';
+
+    } catch (err) {
+      btn.dataset.rec = 'false';
+      btn.textContent = '🎙 وویس';
+      mediaError(err, 'میکروفون');
+    }
+  };
 });
