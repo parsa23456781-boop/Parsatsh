@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl" data-theme="steel" data-mode="dark">
 <head>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MAP — دستیار طراحی و قیمت‌گذاری قطعات مکانیکی</title>
@@ -96,9 +97,9 @@
       </div>
 
       <div class="metrics">
-        <div><div class="metric__v num">۶۳</div><div class="metric__l">جنس ثبت‌شده در بانک داده</div></div>
-        <div><div class="metric__v num">۴</div><div class="metric__l">معیار طراحی خستگی</div></div>
-        <div><div class="metric__v num">۲</div><div class="metric__l">خروجی: STEP و PDF</div></div>
+        <div><div class="metric__v num">63</div><div class="metric__l">جنس ثبت‌شده در بانک داده</div></div>
+        <div><div class="metric__v num">4</div><div class="metric__l">معیار طراحی خستگی</div></div>
+        <div><div class="metric__v num">2</div><div class="metric__l">خروجی: STEP و PDF</div></div>
         <div><div class="metric__v">تومان</div><div class="metric__l">قیمت‌گذاری بازار داخلی</div></div>
       </div>
     </div>
@@ -127,13 +128,22 @@
         </div>
 
         <div class="chips">
-          <button class="chip">یک شفت با گشتاور ۵۶۰ نیوتن‌متر و طول ۲ متر می‌خواهم</button>
+          <button class="chip">یک شفت با گشتاور 560 نیوتن‌متر و طول 2 متر می‌خواهم</button>
           <button class="chip">بار ضربه‌ای است</button>
-          <button class="chip">ضریب اطمینان ۲.۵ باشد</button>
+          <button class="chip">ضریب اطمینان 2.5 باشد</button>
+        </div>
+
+        <div class="intypes">
+          <button class="intype" data-in="voice" title="پیام صوتی">🎙 وویس</button>
+          <button class="intype" data-in="image" title="عکس قطعه">🖼 عکس</button>
+          <button class="intype" data-in="pdf" title="کاتالوگ یا PDF">📄 کاتالوگ / PDF</button>
+          <button class="intype" data-in="cad" title="فایل STEP یا پارت">📐 STEP / Part</button>
+          <input type="file" id="fileIn" hidden>
+          <input type="file" id="camIn" accept="image/*" capture="environment" hidden>
         </div>
 
         <div class="composer">
-          <textarea id="chatInput" rows="1" placeholder="مثلاً: شفت ۲ متری با گشتاور ۵۶۰ نیوتن‌متر…"></textarea>
+          <textarea id="chatInput" rows="1" placeholder="مثلاً: شفت 2 متری با گشتاور 560 نیوتن‌متر…"></textarea>
           <button class="sendbtn" id="sendBtn" aria-label="ارسال پیام">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12H4M10 6l-6 6 6 6"/></svg>
           </button>
@@ -156,17 +166,17 @@
             <line x1="40" y1="118" x2="380" y2="118" class="dimline"/>
             <line x1="40" y1="110" x2="40" y2="126" class="dimline"/>
             <line x1="380" y1="110" x2="380" y2="126" class="dimline"/>
-            <text id="dimLength" x="210" y="134" text-anchor="middle" class="dimtext">۲٬۰۰۰ mm</text>
+            <text id="dimLength" x="210" y="134" text-anchor="middle" class="dimtext">2,000 mm</text>
             <line x1="398" y1="48" x2="398" y2="92" class="dimline"/>
-            <text id="dimDia" x="392" y="44" text-anchor="end" class="dimtext">Ø۴۸</text>
+            <text id="dimDia" x="392" y="44" text-anchor="end" class="dimtext">Ø48</text>
           </svg>
         </div>
 
         <div class="specs">
-          <div class="spec"><div class="spec__l">گشتاور پیچشی</div><div class="spec__v num" id="specTorque">۵۶۰ N·m</div></div>
-          <div class="spec"><div class="spec__l">طول کل</div><div class="spec__v num" id="specLength">۲٬۰۰۰ mm</div></div>
+          <div class="spec"><div class="spec__l">گشتاور پیچشی</div><div class="spec__v num" id="specTorque">560 N·m</div></div>
+          <div class="spec"><div class="spec__l">طول کل</div><div class="spec__v num" id="specLength">2,000 mm</div></div>
           <div class="spec"><div class="spec__l">نوع بار</div><div class="spec__v" id="specLoad">ثابت و یکنواخت</div></div>
-          <div class="spec"><div class="spec__l">ضریب اطمینان</div><div class="spec__v num" id="specSafety">۲٫۰</div></div>
+          <div class="spec"><div class="spec__l">ضریب اطمینان</div><div class="spec__v num" id="specSafety">2.0</div></div>
         </div>
 
         <div class="sectionlabel">مقایسه‌ی مواد</div>
@@ -175,7 +185,7 @@
         <div class="total">
           <div>
             <div class="total__l">هزینه‌ی نهایی</div>
-            <div><span class="total__v num" id="totalValue">۴٬۷۲۲٬۶۷۲</span> <span class="total__u">تومان</span></div>
+            <div><span class="total__v num" id="totalValue">4,722,672</span> <span class="total__u">تومان</span></div>
           </div>
           <div class="total__x">
             <div class="num" id="totalUsd">≈ 24.46 $</div>
@@ -183,15 +193,13 @@
           </div>
         </div>
 
+        <div class="sectionlabel">خروجی‌ها</div>
         <div class="dl">
-          <button class="btn" data-download>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v11M8 12l4 4 4-4M5 20h14"/></svg>
-            دانلود فایل STEP
-          </button>
-          <button class="btn" data-download>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v11M8 12l4 4 4-4M5 20h14"/></svg>
-            دانلود نقشه PDF
-          </button>
+          <button class="btn" data-out="step">📦 STEP (.step)</button>
+          <button class="btn" data-out="drawing">📐 نقشه (.pdf)</button>
+          <button class="btn" data-out="part">🔩 پارت (.sldprt)</button>
+          <button class="btn" data-out="render">🖼 رندر (.png)</button>
+          <button class="btn" data-out="quote">💰 پیش‌فاکتور (.xlsx)</button>
         </div>
 
         <p class="note">
